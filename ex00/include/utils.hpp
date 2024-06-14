@@ -1,26 +1,24 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
+/*   utils.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/14 10:22:28 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/14 11:22:47 by oldault          ###   ########.fr       */
+/*   Created: 2024/06/14 10:46:18 by oldault           #+#    #+#             */
+/*   Updated: 2024/06/14 11:02:28 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __BITCOINEXCHANGE_HPP__
-#define __BITCOINEXCHANGE_HPP__
+#ifndef __UTILS_HPP__
+#define __UTILS_HPP__
 
 #include "Colors.hpp"
+#include <unistd.h>
 #include <iostream>
-#include <string>
 
-class BitcoinExchange
-{
-  private:
-  public:
-};
+// ! error_handling.cpp
+int invalid_input(int ac, char **av);
 
-#endif // __BITCOINEXCHANGE_HPP__
+#endif // __UTILS_HPP__
