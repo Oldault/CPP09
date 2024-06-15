@@ -19,6 +19,7 @@
 #include <iostream>
 
 // ! error_handling.cpp
-int invalid_input(int ac, char **av);
+int invalid_input(int ac, char **av, const std::string& filename);
+bool file_exists (const std::string& filename);
 
 #endif // __UTILS_HPP__

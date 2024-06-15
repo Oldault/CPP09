@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   BitcoinExchange.LifeCycle.cpp                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/14 10:21:46 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/15 18:08:32 by oldault          ###   ########.fr       */
+/*   Created: 2024/06/15 11:28:24 by oldault           #+#    #+#             */
+/*   Updated: 2024/06/15 17:51:43 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
-#include "utils.hpp"
 
-int main(int ac, char **av)
+BitcoinExchange::BitcoinExchange()
 {
-  std::string filename = "data/data.csv";
-  if (invalid_input(ac, av, filename))
-    return -42;
 
-  BitcoinExchange BTC;
-  try {
-    BTC.loadPricesFromCSV(filename);
-  } catch (const std::exception &e) {}
+}
 
-  // BTC.displayPrices();
+BitcoinExchange::BitcoinExchange(const BitcoinExchange& other)
+{
+  (void)other;
+}
 
-  return 0;
+BitcoinExchange::~BitcoinExchange()
+{
+
+}
+
+BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other)
+{
+  (void)other;
+
+  return *this;
 }
