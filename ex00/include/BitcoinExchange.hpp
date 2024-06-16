@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 10:22:28 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/15 17:56:10 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/15 19:49:21 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,27 @@
 #include <map>
 #include <stdexcept>
 
+struct Date
+{
+  int year;
+  int month;
+  int day;
+
+  bool operator<(const Date& other) const {
+    if (year != other.year) return year < other.year;
+    if (month != other.month) return month < other.month;
+    return day < other.day;
+  }
+};
+
 class BitcoinExchange
 {
   private:
-    std::map<std::string, double> _btcPrices;
+    std::map<Date, double> _btcPrices;
   
   public:
+    typedef BitcoinExchange BE;
+
     BitcoinExchange();
     BitcoinExchange(const BitcoinExchange& other);
     ~BitcoinExchange();
@@ -35,6 +50,9 @@ class BitcoinExchange
 
     void loadPricesFromCSV(const std::string& filename);
     void displayPrices() const;
+    void processInputFile(const std::string& filename);
+    void handleLine(const std::string& line);
+    double getBitcoinValueOnDate(const Date& date, double value) const;
 };
 
 #endif // __BITCOINEXCHANGE_HPP__

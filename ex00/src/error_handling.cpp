@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:01:21 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/15 18:07:35 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/15 18:54:03 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ int invalid_input(int ac, char **av, const std::string& filename)
   if (!file_exists(av[1])) {
     return log_error("Problem opening given file. Try again");
   }
-  if (!file_exists(filename))
-  {
+  if (!file_exists(filename)) {
     return log_error("Problem opening the data file");
   }
 

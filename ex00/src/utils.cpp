@@ -1,31 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BitcoinExchange.LifeCycle.cpp                      :+:      :+:    :+:   */
+/*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/15 11:28:24 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/15 18:53:46 by oldault          ###   ########.fr       */
+/*   Created: 2024/06/16 16:15:53 by oldault           #+#    #+#             */
+/*   Updated: 2024/06/16 16:27:08 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "BitcoinExchange.hpp"
-
-BitcoinExchange::BitcoinExchange()
-{}
-
-BitcoinExchange::BitcoinExchange(const BitcoinExchange& other)
-{
-  (void)other;
-}
-
-BitcoinExchange::~BitcoinExchange()
-{}
-
-BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other)
-{
-  (void)other;
-
-  return *this;
-}
+#include "utils.hpp"
