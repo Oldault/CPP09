@@ -18,6 +18,8 @@
 #include <unistd.h>
 #include <iostream>
 
+#define MAX_STEPS 100
+
 // ! error_handling.cpp
 int invalid_input(int ac, char **av, const std::string& filename);
 bool file_exists (const std::string& filename);

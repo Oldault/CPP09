@@ -3,15 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
+/*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 16:50:04 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/16 16:37:03 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/16 18:14:06 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 #include "utils.hpp"
+
+std::ostream& operator<<(std::ostream& os, const Date& date)
+{
+  os << date.year << '-' 
+    << std::setw(2) << std::setfill('0') << date.month << '-'
+    << std::setw(2) << std::setfill('0') << date.day;
+  return os;
+}
 
 /**
  * @brief Loads Bitcoin prices from a CSV file into the map.
@@ -102,7 +110,6 @@ void BitcoinExchange::handleLine(const std::string& line)
   std::istringstream ss(line);
   std::string dateStr, valueStr;
   if (std::getline(ss, dateStr, '|') && std::getline(ss, valueStr)) {
-    // std::cout << "handled Lines: " << BGRN(dateStr) << "\t" << BBLU(valueStr) << std::endl;
     Date date;
     if (std::sscanf(dateStr.c_str(), "%d-%d-%d", &date.year, &date.month, &date.day) != 3) {
       std::cerr << BRED(" ERROR: ") << "\t" << FRED("Invalid date -> ");
@@ -116,17 +123,42 @@ void BitcoinExchange::handleLine(const std::string& line)
       std::cerr << BRED(" ERROR: ") << "\t";
       throw std::runtime_error("number too large");
     }
-    BE::getBitcoinValueOnDate(date, value);
+    std::cout << date << " => " << FYEL(value) << " =\t" << BMAG(BE::getBitcoinValueOnDate(date, value)) << std::endl;
   } else {
     std::cerr << BRED(" ERROR: ") << "\t" << FRED("Bad input -> ");
     throw std::runtime_error(line.c_str());
   }
 }
 
+double BitcoinExchange::getClosestPrice(const Date& queryDate) const
+{
+  std::map<Date, double>::const_iterator it = _btcPrices.lower_bound(queryDate);
+  if (it == _btcPrices.begin()) {
+    return -1.0;
+  }
+  --it;
+  if (it->first != queryDate) {
+    --it;
+  }
+  if (it == _btcPrices.begin()) {
+    return it->second;
+  }
+  return it->second; 
+}
+
 double BitcoinExchange::getBitcoinValueOnDate(const Date& date, double value) const
 {
-  std::cout << "getBitcoinValueOnDate : " << date.year << "-" << date.month << "-" << date.day << ", " << value << std::endl;
-  return 0.0;
+  double result;
+  std::map<Date, double>::const_iterator match = _btcPrices.find(date);
+  if (match != _btcPrices.end()) {
+    result = match->second;
+  } else {
+    result = getClosestPrice(date);
+  }
+
+  // std::cout << result << " * " << value << " = " << (result * value) << "\t";
+  return (result * value);
 }
+
 
 
