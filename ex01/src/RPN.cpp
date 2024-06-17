@@ -6,15 +6,11 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 21:09:38 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 21:19:56 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/17 21:26:24 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RPN.hpp"
-
-RPN::RPN() {}
-
-RPN::~RPN() {}
 
 int RPN::popTop()
 {

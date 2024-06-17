@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:17:57 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 21:11:59 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/17 21:25:54 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ class RPN
   public:
     RPN();
     ~RPN();
+
+    RPN(const RPN& other);
+    RPN& operator=(const RPN& other);
   
     void processToken(const std::string& token);
     int getResult();
