@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:17:57 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 15:01:00 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/17 21:11:59 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,15 @@ class RPN
 {
   private:
     std::stack<int> _stack;
+    int getOperatorCode(const std::string& token);
+    int popTop();
+
   public:
+    RPN();
+    ~RPN();
+  
+    void processToken(const std::string& token);
+    int getResult();
 };
 
 #endif // __RPN_H__

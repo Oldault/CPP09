@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/17 14:17:35 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 21:21:25 by oldault          ###   ########.fr       */
+/*   Created: 2024/06/17 20:56:29 by oldault           #+#    #+#             */
+/*   Updated: 2024/06/17 21:22:23 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef __UTILS_H__
+#define __UTILS_H__
+
 #include "RPN.hpp"
-#include "utils.hpp"
 
-int main(int ac, char **av)
-{
-  if (ac != 2) {
-    printDemo();
-    return - 42;
-  }
+template <typename Out>
+void split(const std::string &s, char delim, Out result);
+std::vector<std::string> split(const std::string &s, char delim);
+void printDemo();
 
-  RPN rpn;
-  std::string input = av[1];
-  std::vector<std::string> x = split(input, ' ');
-  
-  for (std::vector<std::string>::size_type i = 0; i < x.size(); i++) {
-    rpn.processToken(x[i]);
-  }
-  std::cout << FGRN(rpn.getResult()) << std::endl;
-  return rpn.getResult();
-}
+#endif // __UTILS_H__
