@@ -3,23 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 16:50:04 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/16 18:14:06 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:19:13 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 #include "utils.hpp"
-
-std::ostream& operator<<(std::ostream& os, const Date& date)
-{
-  os << date.year << '-' 
-    << std::setw(2) << std::setfill('0') << date.month << '-'
-    << std::setw(2) << std::setfill('0') << date.day;
-  return os;
-}
 
 /**
  * @brief Loads Bitcoin prices from a CSV file into the map.
@@ -36,29 +28,18 @@ std::ostream& operator<<(std::ostream& os, const Date& date)
  */
 void BitcoinExchange::loadPricesFromCSV(const std::string& filename)
 {
-  std::ifstream infile(filename.c_str());
-  if (!infile)
-    throw std::runtime_error("Could not open BTC data file");
+  std::ifstream infile = openFile(filename);
 
   std::string header;
   std::getline(infile, header);
 
   std::string line;
-  while (std::getline(infile, line)) {
-    std::istringstream ss(line);
-    std::string dateStr, priceStr;
-    if (std::getline(ss, dateStr, ',') && std::getline(ss, priceStr)) {
-      Date date;
-      std::sscanf(dateStr.c_str(), "%d-%d-%d", &date.year, &date.month, &date.day);
-      char* end;
-      double price = strtod(priceStr.c_str(), &end);
-      if (*end != '\0') {
-        std::cerr << BRED("Error: Invalid price format in line: ") << FRED(BOLD(line)) << std::endl;
-        continue;
-      }
+  while (std::getline(infile, line))
+  {
+    Date date;
+    double price;
+    if (parseCSVLine(line, date, price)) {
       _btcPrices[date] = price;
-    } else {
-      std::cerr << BRED("Error: Incorrect format in line: ") << FRED(BOLD(line)) << std::endl;
     }
   }
   infile.close();
@@ -75,32 +56,67 @@ void BitcoinExchange::displayPrices() const
   }
 }
 
+void throwErr(const std::string& err)
+{
+  std::string redErr = FRED(err);
+  throw std::runtime_error(redErr);
+}
+
 void BitcoinExchange::processInputFile(const std::string& filename)
 {
-  std::ifstream infile(filename.c_str());
-  if (!infile)
-    throw std::runtime_error("Could not open the input file");
+  std::ifstream infile = openFile(filename);
 
   std::string header;
   std::getline(infile, header);
   if (header != "date | value")
-    std::cerr << BRED(" input file header not standard ") << std::endl;
+    throwErr("input file header not standard");
 
   std::string line;
   while (std::getline(infile, line)) {
     try {
       BitcoinExchange::handleLine(line);
-    } catch (const std::exception &e) {}
+    } catch (const std::exception &e) {
+      std::cerr << BRED(" ERROR: ") << "\t" << e.what() << std::endl;
+    }
   }
 }
 
-static double getValue(const std::string& valueStr)
+
+Date BitcoinExchange::handleDate(const std::string& dateStr)
+{
+  Date date;
+  if (std::sscanf(dateStr.c_str(), "%d-%d-%d", &date.year, &date.month, &date.day) != 3)
+  {
+    std::string err = FRED("Date: ") + FRED(UNDL(dateStr)) + FRED(" not in valid format");
+    throw std::runtime_error(err);
+  }
+  
+  std::map<Date, double>::iterator firstIt = _btcPrices.begin();
+  std::map<Date, double>::iterator lastIt = _btcPrices.end();
+  --lastIt;
+  Date dateStart = firstIt->first;
+  Date dateEnd = lastIt->first;
+  if (date < dateStart) { 
+    throwErr("No Record of such early date in database");
+  } else if (dateEnd < date) {
+    throwErr("Database only goes up to 2022-03-29");
+  }
+
+  return date;
+}
+
+double BitcoinExchange::handleValue(const std::string& valueStr)
 {
   char* end;
   double value = strtod(valueStr.c_str(), &end);
   if (*end != '\0') {
-    std::cerr << BRED("Error: Invalid price format") << std::endl;
-    return -1;
+    throwErr("Invalid price format");
+  }
+  
+  if (value < 0.0) {
+    throwErr("Negative number detected");
+  } else if (value > 1000.0) {
+    throwErr("Number too large to process");
   }
   return value;
 }
@@ -110,23 +126,12 @@ void BitcoinExchange::handleLine(const std::string& line)
   std::istringstream ss(line);
   std::string dateStr, valueStr;
   if (std::getline(ss, dateStr, '|') && std::getline(ss, valueStr)) {
-    Date date;
-    if (std::sscanf(dateStr.c_str(), "%d-%d-%d", &date.year, &date.month, &date.day) != 3) {
-      std::cerr << BRED(" ERROR: ") << "\t" << FRED("Invalid date -> ");
-      throw std::runtime_error(dateStr.c_str());
-    }
-    double value = getValue(valueStr);
-    if (value < 0.0) {
-      std::cerr << BRED(" ERROR: ") << "\t";
-      throw std::runtime_error("not a positive number");
-    } else if (value > 1000.0) {
-      std::cerr << BRED(" ERROR: ") << "\t";
-      throw std::runtime_error("number too large");
-    }
+    Date date = handleDate(dateStr);
+    double value = handleValue(valueStr);
     std::cout << date << " => " << FYEL(value) << " =\t" << BMAG(BE::getBitcoinValueOnDate(date, value)) << std::endl;
   } else {
-    std::cerr << BRED(" ERROR: ") << "\t" << FRED("Bad input -> ");
-    throw std::runtime_error(line.c_str());
+    std::string err = FRED("Bad input => ") + FRED(UNDL(dateStr));
+    throw std::runtime_error(err);
   }
 }
 

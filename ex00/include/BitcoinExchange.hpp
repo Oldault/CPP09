@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 10:22:28 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/16 18:12:32 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:00:15 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@
 
 struct Date
 {
-  int year;
-  int month;
-  int day;
+  int year, month, day;
 
   bool operator<(const Date& other) const {
     if (year != other.year) return year < other.year;
@@ -45,7 +43,14 @@ class BitcoinExchange
 {
   private:
     std::map<Date, double> _btcPrices;
-  
+
+    std::ifstream openFile(const std::string& filename);
+    bool parseCSVLine(const std::string& line, Date& date, double& price);
+    void handleLine(const std::string& line);
+    Date handleDate(const std::string& dateStr);
+    double handleValue(const std::string& valueStr);
+    double getClosestPrice(const Date& date) const;
+
   public:
     typedef BitcoinExchange BE;
 
@@ -58,9 +63,7 @@ class BitcoinExchange
     void loadPricesFromCSV(const std::string& filename);
     void displayPrices() const;
     void processInputFile(const std::string& filename);
-    void handleLine(const std::string& line);
     double getBitcoinValueOnDate(const Date& date, double value) const;
-    double getClosestPrice(const Date& date) const;
 };
 
 #endif // __BITCOINEXCHANGE_HPP__
