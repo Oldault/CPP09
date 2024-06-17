@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 16:50:04 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 11:40:09 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/17 14:14:18 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void BitcoinExchange::displayPrices() const
  * line using the handleLine method. It skips values that are not standard.
  *
  * @param filename The name of the input file to be processed.
- * @throw std::runtime_error if the input file header is not standard.
  * @throw std::ios_base::failure if the file cannot be opened.
  */
 void BitcoinExchange::processInputFile(const std::string& filename)
@@ -91,8 +90,10 @@ void BitcoinExchange::processInputFile(const std::string& filename)
 
   std::string header;
   std::getline(infile, header);
-  if (header != "date | value")
-    throwErr("input file header not standard");
+  if (header != "date | value") {
+    std::cerr << BRED(" input file header missing ") << std::endl;
+    return ;
+  }
 
   std::string line;
   while (std::getline(infile, line)) {
