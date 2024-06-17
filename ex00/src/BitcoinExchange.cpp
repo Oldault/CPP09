@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 16:50:04 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 11:19:13 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/17 11:40:09 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,25 @@ void BitcoinExchange::loadPricesFromCSV(const std::string& filename)
   infile.close();
 }
 
+bool BitcoinExchange::parseCSVLine(const std::string& line, Date& date, double& price)
+{
+  std::istringstream ss(line);
+  std::string dateStr, priceStr;
+  
+  if (std::getline(ss, dateStr, ',') && std::getline(ss, priceStr))
+  {
+    if (std::sscanf(dateStr.c_str(), "%d-%d-%d", &date.year, &date.month, &date.day) != 3)
+      return false;
+    
+    char* end;
+    price = std::strtod(priceStr.c_str(), &end);
+    if (*end != '\0')
+      return false;
+    return true;
+  }
+  return false;
+}
+
 /**
  * @brief Prints out `_btcPrices` to the terminal
  */
@@ -56,12 +75,16 @@ void BitcoinExchange::displayPrices() const
   }
 }
 
-void throwErr(const std::string& err)
-{
-  std::string redErr = FRED(err);
-  throw std::runtime_error(redErr);
-}
-
+/**
+ * @brief Processes the input file for BitcoinExchange.
+ *
+ * This function reads the specified input file, and processes each
+ * line using the handleLine method. It skips values that are not standard.
+ *
+ * @param filename The name of the input file to be processed.
+ * @throw std::runtime_error if the input file header is not standard.
+ * @throw std::ios_base::failure if the file cannot be opened.
+ */
 void BitcoinExchange::processInputFile(const std::string& filename)
 {
   std::ifstream infile = openFile(filename);
@@ -80,7 +103,6 @@ void BitcoinExchange::processInputFile(const std::string& filename)
     }
   }
 }
-
 
 Date BitcoinExchange::handleDate(const std::string& dateStr)
 {
@@ -102,6 +124,11 @@ Date BitcoinExchange::handleDate(const std::string& dateStr)
     throwErr("Database only goes up to 2022-03-29");
   }
 
+  if (date.month < 0 || 12 < date.month) {
+    throwErr("Invalid Month value");
+  } else if (date.day < 0 || 31 < date.day) {
+    throwErr("Invalid Day value");
+  }
   return date;
 }
 
@@ -130,6 +157,8 @@ void BitcoinExchange::handleLine(const std::string& line)
     double value = handleValue(valueStr);
     std::cout << date << " => " << FYEL(value) << " =\t" << BMAG(BE::getBitcoinValueOnDate(date, value)) << std::endl;
   } else {
+    if (dateStr.empty() && valueStr.empty())
+      dateStr = "Empty Input";
     std::string err = FRED("Bad input => ") + FRED(UNDL(dateStr));
     throw std::runtime_error(err);
   }
@@ -155,13 +184,8 @@ double BitcoinExchange::getBitcoinValueOnDate(const Date& date, double value) co
 {
   double result;
   std::map<Date, double>::const_iterator match = _btcPrices.find(date);
-  if (match != _btcPrices.end()) {
-    result = match->second;
-  } else {
-    result = getClosestPrice(date);
-  }
+  result = ((match != _btcPrices.end()) ? match->second : getClosestPrice(date));
 
-  // std::cout << result << " * " << value << " = " << (result * value) << "\t";
   return (result * value);
 }
 

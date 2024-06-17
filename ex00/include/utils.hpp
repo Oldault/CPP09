@@ -24,4 +24,7 @@
 int invalid_input(int ac, char **av, const std::string& filename);
 bool file_exists (const std::string& filename);
 
+// * utils.cpp
+void throwErr(const std::string& err);
+
 #endif // __UTILS_HPP__

@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 10:22:28 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 11:00:15 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/17 11:22:48 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ class BitcoinExchange
     Date handleDate(const std::string& dateStr);
     double handleValue(const std::string& valueStr);
     double getClosestPrice(const Date& date) const;
+    double getBitcoinValueOnDate(const Date& date, double value) const;
 
   public:
     typedef BitcoinExchange BE;
@@ -61,9 +62,8 @@ class BitcoinExchange
     BitcoinExchange& operator=(const BitcoinExchange& other);
 
     void loadPricesFromCSV(const std::string& filename);
-    void displayPrices() const;
     void processInputFile(const std::string& filename);
-    double getBitcoinValueOnDate(const Date& date, double value) const;
+    void displayPrices() const;
 };
 
 #endif // __BITCOINEXCHANGE_HPP__
