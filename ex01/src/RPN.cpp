@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 21:09:38 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 21:26:24 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/21 16:05:21 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void RPN::processToken(const std::string& token)
 int RPN::getResult()
 {
   if (_stack.empty()) {
-      std::cerr << BRED(" No result available ") << std::endl;
-      exit(-1);
+    std::cerr << BRED(" No result available ") << std::endl;
+    exit(-1);
   }
   return _stack.top();
 }
