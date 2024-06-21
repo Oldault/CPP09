@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 11:54:45 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/21 10:16:06 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/21 10:31:27 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ class PMergeMe
     void printAfter() const;
 
     void vecSort();
-    void vecMergeInsertSort();
-    void vecInsertSort();
-    void vecMerge();
+    void vecInsertSort(int left, int right);
+    void vecMerge(int l, int m, int r);
+    void vecMergeInsertSort(int left, int right, int k);
     
   public:
     PMergeMe();
