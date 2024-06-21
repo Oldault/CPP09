@@ -29,7 +29,7 @@ $(OBJ_PATH)/%.o:	$(SRC_PATH)/%.cpp
 	@$(CXX) $(CXXFLAGS) $(HEADERS) -c $< -o $@
 
 clean:
-	@echo "$(BOLD) [🗑️ ] $(YELLOW)$(REVERSED)Cleaning up$(RESET)"
+	@echo "$(BOLD) [ 🗑️ ] $(YELLOW)$(REVERSED)Cleaning up$(RESET)"
 	@$(RM) $(OBJ_PATH)
 	@echo "┗▷$(YELLOW)『$(ITALIC)./$(TARGET)'s$(RESET)$(YELLOW) object files cleaned』$(RESET)"
 
