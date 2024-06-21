@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 12:55:00 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/21 14:26:35 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/21 15:08:05 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void PMergeMe::printBefore() const
 {
-  std::cout << BYEL(" Before: ") << "\t";
+  std::cout << "\n\t" << BYEL(" Before: ") << "\t";
   if (_vecNums.size() <= 6) {
     printVec(_vecNums);
     return ;
@@ -28,7 +28,7 @@ void PMergeMe::printBefore() const
 
 void PMergeMe::printAfter() const
 {
-  std::cout << BGRN(" After: ") << "\t";
+  std::cout << "\t" << BGRN(" After: ") << "\t";
   if (_vecNums.size() <= 6) {
     printVec(_vecNums);
   } else {
@@ -38,10 +38,19 @@ void PMergeMe::printAfter() const
     std::cout << ITAL("[...]") << std::endl;
   }
 
-  std::cout << BOLD("[ 📋 ] ")
+  std::cout << "\n" << BOLD("[ 📋 ] ")
     << UNDL("Element count :") << " "
     << FBLU(ITAL(_vecNums.size()))
   << std::endl;
+
+  std::cout << BOLD("[ ⏳ ] ")
+    << UNDL("Processing Time (")
+    << UNDL(FMAG("Vec")) << UNDL(", ")
+    << UNDL(FRED("Deque"))
+    << UNDL(") :") << " "
+    << FMAG(ITAL(_vecTime)) << ", "
+    << FRED(ITAL(_dequeTime)) << ITAL("ms")
+  << std::endl << std::endl;
 }
 
 bool PMergeMe::addNumber(const std::string& arg)
@@ -71,4 +80,6 @@ void PMergeMe::sort()
   
   printBefore();
   vecSort();
+  dequeSort();
+  printAfter();
 }

@@ -6,7 +6,7 @@
 /*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:24:24 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/21 14:24:37 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/21 14:31:40 by oldault          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,7 @@ void PMergeMe::vecSort()
   clock_t start = clock();
   vecMergeInsertSort(0, _vecNums.size() - 1, 2);
   clock_t end = clock();
-  printAfter();
-  std::cout << BOLD("[ ⏳ ] ")
-    << UNDL("Processing Time (")
-    << UNDL(FMAG("Vec"))
-    << UNDL(") :") << " "
-    << FMAG(ITAL(end - start)) << FMAG(ITAL("ms"))
-  << std::endl;
+  _vecTime = end - start;
 }
 
 void PMergeMe::vecInsertSort(int left, int right)
