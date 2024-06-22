@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
+/*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 16:50:04 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 14:14:18 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/22 09:45:36 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
  */
 void BitcoinExchange::loadPricesFromCSV(const std::string& filename)
 {
-  std::ifstream infile = openFile(filename);
+  std::ifstream infile;
+  openFile(filename, infile);
 
   std::string header;
   std::getline(infile, header);
@@ -86,7 +87,8 @@ void BitcoinExchange::displayPrices() const
  */
 void BitcoinExchange::processInputFile(const std::string& filename)
 {
-  std::ifstream infile = openFile(filename);
+  std::ifstream infile;
+  openFile(filename, infile);
 
   std::string header;
   std::getline(infile, header);
@@ -156,7 +158,7 @@ void BitcoinExchange::handleLine(const std::string& line)
   if (std::getline(ss, dateStr, '|') && std::getline(ss, valueStr)) {
     Date date = handleDate(dateStr);
     double value = handleValue(valueStr);
-    std::cout << date << " => " << FYEL(value) << " =\t" << BMAG(BE::getBitcoinValueOnDate(date, value)) << std::endl;
+    std::cout << date << " => " << FGRN(value) << " =\t" << BMAG(BE::getBitcoinValueOnDate(date, value)) << std::endl;
   } else {
     if (dateStr.empty() && valueStr.empty())
       dateStr = "Empty Input";

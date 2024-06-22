@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
+/*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 10:22:28 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 11:22:48 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/22 09:42:15 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ class BitcoinExchange
   private:
     std::map<Date, double> _btcPrices;
 
-    std::ifstream openFile(const std::string& filename);
+    void openFile(const std::string& filename, std::ifstream& infile);
     bool parseCSVLine(const std::string& line, Date& date, double& price);
     void handleLine(const std::string& line);
     Date handleDate(const std::string& dateStr);

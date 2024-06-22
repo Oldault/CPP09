@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.helper.cpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
+/*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 10:34:50 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/17 11:29:56 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/22 09:43:31 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,12 @@ std::ostream& operator<<(std::ostream& os, const Date& date)
   return os;
 }
 
-std::ifstream BitcoinExchange::openFile(const std::string& filename)
+void BitcoinExchange::openFile(const std::string& filename, std::ifstream& infile)
 {
-  std::ifstream infile(filename.c_str());
+  infile.open(filename.c_str());
   if (!infile) {
-    std::string err = FRED("Could not open ") + FRED(UNDL(filename));
-    throw std::ios_base::failure(err);
+    throw std::runtime_error("Could not open file");
   }
-    
-  return infile;
 }
 
 
