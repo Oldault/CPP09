@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RPN.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oldault <oldault@student.42.fr>            +#+  +:+       +#+        */
+/*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:17:57 by oldault           #+#    #+#             */
-/*   Updated: 2024/06/21 16:00:50 by oldault          ###   ########.fr       */
+/*   Updated: 2024/06/22 09:50:47 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include <sstream>
 #include <vector>
 #include <iterator>
+#include <stdlib.h>
+#include <cstdlib>
 
 class RPN
 {

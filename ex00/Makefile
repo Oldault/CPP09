@@ -1,7 +1,7 @@
 CXX				:= c++
 HEADERS		:= -Iinclude -Icolor
 CXXFLAGS	:= -Wall -Wextra -Werror -Wshadow -g3 -std=c++98
-TARGET		:= BTC
+TARGET		:= btc
 
 SRC_PATH	:= src
 OBJ_PATH	:= obj
